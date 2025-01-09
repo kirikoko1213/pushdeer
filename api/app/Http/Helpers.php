@@ -67,7 +67,7 @@ function android_sender()
     return $GLOBALS['PD_ANDROID_SENDER'];
 }
 
-function android_send_no_queue($is_clip, $device_token, $text, $desp = '', $dev = true)
+function android_send_no_queue($is_clip, $device_token, $text, $subtitle, $desp = '', $dev = true)
 {
     if (strlen($desp) < 1) {
         $desp = $text;
@@ -93,7 +93,7 @@ function android_send_no_queue($is_clip, $device_token, $text, $desp = '', $dev 
     return json_encode(["counts"=>1,"logs"=>[$sender->send($message1, $device_token)->getRaw()]]);
 }
 
-function ios_send($is_clip, $device_token, $text, $desp = '', $dev = true)
+function ios_send($is_clip, $device_token, $text, $subtitle, $desp = '', $dev = true)
 {
     $notification = new stdClass();
     $notification->tokens = [ $device_token ];
@@ -116,7 +116,7 @@ function ios_send($is_clip, $device_token, $text, $desp = '', $dev = true)
     $notification->topic = $topic;
     $notification->sound = ['volume'=>2.0];
     $notification->mutable_content = true;
-    $notification->alert= ['title'=>$text, 'subtitle'=>$desp, 'body'=>$desp];
+    $notification->alert= ['title'=>$text, 'subtitle'=>$subtitle, 'body'=>$desp];
     // 'subtitle'=>'from PushDeer',
 
     $json = ['notifications'=>[$notification]];
@@ -129,7 +129,7 @@ function ios_send($is_clip, $device_token, $text, $desp = '', $dev = true)
     return $ret;
 }
 
-function android_send($is_clip, $device_token, $text, $desp = '', $dev = true)
+function android_send($is_clip, $device_token, $text, $subtitle, $desp = '', $dev = true)
 {
     $notification = new stdClass();
     $notification->tokens = [ $device_token ];

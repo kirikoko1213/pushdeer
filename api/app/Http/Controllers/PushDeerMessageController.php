@@ -47,6 +47,7 @@ class PushDeerMessageController extends Controller
             [
                 'pushkey' => 'string|required',
                 'text' => 'string|required',
+                'subtitle' => 'string|nullable',
                 'desp' => 'string|nullable',
                 'type' => 'string|nullable',
             ]
@@ -58,6 +59,10 @@ class PushDeerMessageController extends Controller
 
         if (!isset($validated['type'])) {
             $validated['type'] = 'markdown';
+        }
+
+        if (!isset($validated['subtitle'])) {
+            $validated['subtitle'] = '';
         }
 
         $result = [];
@@ -112,7 +117,7 @@ class PushDeerMessageController extends Controller
                         if ($device) {
                             $func_name = $device['type'].'_send';
                             if (function_exists($func_name)) {
-                                $result[] = $func_name($device->is_clip, $device->device_id, $validated['text'], '', env('APP_DEBUG'));
+                                $result[] = $func_name($device->is_clip, $device->device_id, $validated['text'], $validated['subtitle'], '', env('APP_DEBUG'));
                             }
                         }
                     }
